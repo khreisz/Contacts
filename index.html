@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Zaid Khreis">
+  <title>Contacts</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 2rem 1rem;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f5f7fa;
+      color: #1f2933;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 0 0 1.5rem;
+      font-size: 1.8rem;
+    }
+
+    .contact-card {
+      max-width: 480px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      padding: 1.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.25rem;
+    }
+
+    th {
+      text-align: left;
+      padding: 0.6rem 0.75rem;
+      background-color: #1f2933;
+      color: #ffffff;
+      font-size: 0.95rem;
+    }
+
+    td {
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid #e4e7eb;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #f5f7fa;
+    }
+
+    #search-btn {
+      display: block;
+      width: 100%;
+      padding: 0.85rem;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #ffffff;
+      background-color: #2563eb;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #search-btn:hover {
+      background-color: #1d4ed8;
+    }
+
+    #output {
+      margin-top: 1.25rem;
+      padding: 0.9rem;
+      min-height: 2.5rem;
+      background-color: #eef2ff;
+      border-left: 4px solid #2563eb;
+      border-radius: 4px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Contacts</h1>
+
+  <div class="contact-card">
+
+    <table>
+      <thead>
+        <tr>
+          <th>Slot #</th>
+          <th>Number</th>
+        </tr>
+      </thead>
+      <tbody id="contact-table"></tbody>
+    </table>
+
+    <button id="search-btn" type="button">Search a Contact</button>
+
+    <div id="output">Click the button to search for a contact.</div>
+
+  </div>
+
+  <script type="text/javascript">
+
+    // Contact names; array index = slot number
+    const contacts = ["Ahmad", "Ray", "Omar", "Khaled", "Paul", "Rudy"];
+
+    // Build table rows from the array
+    let tableRows = "";
+    let rowIndex = 0;
+
+    while (rowIndex < contacts.length) {
+      tableRows += `<tr><td>${rowIndex}</td><td>${contacts[rowIndex]}</td></tr>`;
+      rowIndex++;
+    }
+
+    document.getElementById("contact-table").innerHTML = tableRows;
+
+    // Cache elements
+    const searchButton = document.getElementById("search-btn");
+    const outputBox = document.getElementById("output");
+
+    // Run search loop on button click
+    searchButton.addEventListener("click", function () {
+      let searching = true;
+
+      while (searching) {
+        // Ask for slot number
+        let slotInput = prompt("Enter the slot number for the contact you want to find:");
+
+        // Cancel stops the loop
+        if (slotInput === null) {
+          outputBox.textContent = "Search cancelled.";
+          break;
+        }
+
+        let slotNumber = Number(slotInput);
+
+        // Valid slot with a name
+        if (
+          !isNaN(slotNumber) &&
+          slotNumber >= 0 &&
+          slotNumber < contacts.length
+        ) {
+          outputBox.textContent = `You selected ${contacts[slotNumber]}.`;
+        } else {
+          outputBox.textContent = `Slot ${slotInput} does not contain a name. Please try again.`;
+        }
+
+        // Ask to search again
+        let again = prompt("Would you like to search for another contact? Type yes or no.");
+
+        if (again === null || again.toLowerCase() !== "yes") {
+          searching = false;
+        }
+      }
+    });
+
+  </script>
+</body>
+</html>
